@@ -2,9 +2,26 @@
 
 console.log("hi");
 
+//3rd ui append with looking data and calling data from weatherData() function
+// Function to update the DOM with weather data
+function displayWeather(data) {
+  const cityName = document.getElementById("city-name");
+  const tempElement = document.getElementById("temp");
+  const descElement = document.getElementById("desc");
+  const humidityElement = document.getElementById("humidity");
+
+  // Extract values and update HTML text content
+  cityName.textContent = data.name;
+  tempElement.textContent = `Temperature: ${data.main.temp} °C`;
+  descElement.textContent = `Condition: ${data.weather[0].description}`;
+  humidityElement.textContent = `Humidity: ${data.main.humidity}%`;
+}
+
+//1 step take imort key
 const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 console.log("Loaded API Key:", apiKey); //
 
+//2.weather api key fetch from url with key
 async function weatherApi() {
   try {
     // 1. First fetch: Get coordinates for the city
@@ -41,7 +58,7 @@ async function weatherApi() {
     }
     const weatherData = await weatherResponse.json();
     console.log("Full Industrial Weather Data Object:", weatherData);
-
+    displayWeather(weatherData);
     // data.map(async (nm) => {
     //   //   console.log("map arr: ", nm.name);
     //   console.log(
