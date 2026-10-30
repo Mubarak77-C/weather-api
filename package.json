@@ -1,0 +1,24 @@
+{
+  "name": "weather_api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mubarak77-C/weather-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Mubarak77-C/weather-api/issues"
+  },
+  "homepage": "https://github.com/Mubarak77-C/weather-api#readme",
+  "devDependencies": {
+    "vite": "^8.3.5"
+  }
+}
