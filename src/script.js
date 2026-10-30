@@ -22,11 +22,11 @@ const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
 console.log("Loaded API Key:", apiKey); //
 
 //2.weather api key fetch from url with key
-async function weatherApi() {
+async function getWeatherData(city) {
   try {
     // 1. First fetch: Get coordinates for the city
     const geoResponse = await fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=London&limit=5&appid=${apiKey}`,
+      `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`,
     );
     console.log(geoResponse);
 
@@ -36,7 +36,7 @@ async function weatherApi() {
 
     const geoData = await geoResponse.json(); //as json return promise obj so we have to define await so it convert into arr data response
     if (geoData.length === 0) {
-      throw new Error("Location not found!");
+      throw new Error("Location not found! Please check the city name.");
     }
     console.log(geoData);
 
@@ -74,8 +74,26 @@ async function weatherApi() {
     // });
   } catch (error) {
     console.error("An error occurred:", error.message);
-    //throw error;
+    document.getElementById("city-name").textContent = error.message;
+    // Clear out other fields on error
+    document.getElementById("temp").textContent = "";
+    document.getElementById("desc").textContent = "";
+    document.getElementById("humidity").textContent = "";
   }
 }
 
-weatherApi();
+// 4. Event Listener for the Search Form
+const searchForm = document.getElementById("search-form");
+const cityInput = document.getElementById("city-input");
+
+searchForm.addEventListener("submit", (e) => {
+  e.preventDefault(); // Prevent page reload on form submit
+  const cityName = cityInput.value.trim();
+
+  if (cityName) {
+    getWeatherData(cityName);
+    cityInput.value = ""; // Clear input after searching
+  }
+});
+
+getWeatherData("Tokyo");
