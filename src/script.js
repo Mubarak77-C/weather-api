@@ -40,10 +40,27 @@ async function getWeatherData(city) {
     }
     console.log(geoData);
 
-    // Grab the latitude and longitude from the first result (index 0)
-    const lat = geoData[0].lat;
-    const lon = geoData[0].lon;
-    console.log(`Coordinates found-> Lat: ${lat}, Lon: ${lon}`);
+    // // Grab the latitude and longitude from the first result (index 0)
+    // const lat = geoData[0].lat;
+    // const lon = geoData[0].lon;
+    // console.log(`Coordinates found-> Lat: ${lat}, Lon: ${lon}`);
+
+    // 1. Use .find() to look for an exact name match (remove the || geoData[0] part!)
+    const matchedLocation = geoData.find(
+      (item) => item.name.toLowerCase() === city.toLowerCase(),
+    );
+
+    // 2. If no exact match is found, matchedLocation will be undefined, triggering this error
+    if (!matchedLocation) {
+      throw new Error(
+        `City "${city}" not found. Try searching for a specific city like "Mumbai" or "New Delhi".`,
+      );
+    }
+    const lat = matchedLocation.lat;
+    const lon = matchedLocation.lon;
+    console.log(
+      `Matched Location: ${matchedLocation.name}, Lat: ${lat}, Lon: ${lon}`,
+    );
 
     const weatherResponse = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`,
