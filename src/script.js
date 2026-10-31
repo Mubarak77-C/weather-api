@@ -9,12 +9,21 @@ function displayWeather(data) {
   const tempElement = document.getElementById("temp");
   const descElement = document.getElementById("desc");
   const humidityElement = document.getElementById("humidity");
+  const iconElement = document.getElementById("weather-icon");
 
   // Extract values and update HTML text content
   cityName.textContent = data.name;
-  tempElement.textContent = `Temperature: ${data.main.temp} °C`;
+  tempElement.textContent = `Temperature: ${Math.round(data.main.temp)} °C`;
   descElement.textContent = `Condition: ${data.weather[0].description}`;
   humidityElement.textContent = `Humidity: ${data.main.humidity}%`;
+
+  // 2. Get the icon code from the API response (e.g., "10d")
+  const iconCode = data.weather[0].icon;
+
+  // 3. Set the image source to OpenWeatherMap's icon URL and make it visible
+  iconElement.src = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+  iconElement.alt = data.weather[0].description;
+  iconElement.style.display = "block"; // Show the image now that we have data
 }
 
 //1 step take imort key
@@ -26,7 +35,7 @@ async function getWeatherData(city) {
   try {
     // 1. First fetch: Get coordinates for the city
     const geoResponse = await fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`,
+      `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${apiKey}`,
     );
     console.log(geoResponse);
 
@@ -91,11 +100,13 @@ async function getWeatherData(city) {
     // });
   } catch (error) {
     console.error("An error occurred:", error.message);
-    document.getElementById("city-name").textContent = error.message;
-    // Clear out other fields on error
-    document.getElementById("temp").textContent = "";
+    document.getElementById("city-name").textContent = "⚠️ Error";
+    document.getElementById("temp").textContent = error.message;
     document.getElementById("desc").textContent = "";
     document.getElementById("humidity").textContent = "";
+
+    // Hide the icon if an error occurs
+    document.getElementById("weather-icon").style.display = "none";
   }
 }
 
