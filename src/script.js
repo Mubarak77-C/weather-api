@@ -10,8 +10,9 @@ const humidityElement = document.getElementById("humidity");
 const weatherIcon = document.getElementById("weather-icon");
 
 // Function to update the DOM with weather data
-function displayWeather(data) {
-  cityName.textContent = data.name;
+function displayWeather(data, searchedCity) {
+  cityName.textContent =
+    searchedCity.charAt(0).toUpperCase() + searchedCity.slice(1).toLowerCase();
   tempElement.textContent = `Temperature: ${Math.round(data.main.temp)} °C`;
   descElement.textContent = `Condition: ${data.weather[0].description}`;
   humidityElement.textContent = `Humidity: ${data.main.humidity}%`;
@@ -41,17 +42,18 @@ async function getWeatherData(city) {
     }
 
     // 2. Exact match using .find()
-    const matchedLocation = geoData.find(
-      (item) => item.name.toLowerCase() === city.toLowerCase(),
+    // Improved matching: Try to find an exact name match first.
+    // If not found, gracefully fall back to the most relevant result (geoData[0])
+    // to avoid missing major cities due to minor spelling or neighborhood differences.
+    const matchedLocation =
+      geoData.find((item) => item.name.toLowerCase() === city.toLowerCase()) ||
+      geoData[0];
+
+    const lat = matchedLocation.lat;
+    const lon = matchedLocation.lon;
+    console.log(
+      `Selected Location: ${matchedLocation.name}, Country: ${matchedLocation.country}, Lat: ${lat}, Lon: ${lon}`,
     );
-
-    if (!matchedLocation) {
-      throw new Error(
-        `City "${city}" not found. Try searching for a specific city like "Mumbai" or "Tokyo".`,
-      );
-    }
-
-    const { lat, lon } = matchedLocation;
 
     // 3. Weather fetch
     const weatherResponse = await fetch(
@@ -65,7 +67,7 @@ async function getWeatherData(city) {
     }
 
     const weatherData = await weatherResponse.json();
-    displayWeather(weatherData);
+    displayWeather(weatherData, city);
   } catch (error) {
     console.error("An error occurred:", error.message);
     cityName.textContent = "⚠️ Error";
