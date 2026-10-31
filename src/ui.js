@@ -2,6 +2,8 @@
 const cityName = document.getElementById("city-name");
 const tempElement = document.getElementById("temp");
 const descElement = document.getElementById("desc");
+const feelsLikeElement = document.getElementById("feels-like");
+const windElement = document.getElementById("wind");
 const humidityElement = document.getElementById("humidity");
 const weatherIcon = document.getElementById("weather-icon");
 const searchBtn = document.getElementById("search-btn");
@@ -24,6 +26,9 @@ export function displayWeather(data, searchedCity) {
 
   cityName.textContent = formattedCity;
   tempElement.textContent = `Temperature: ${Math.round(data.main.temp)} °C`;
+  // Update the new metrics
+  feelsLikeElement.textContent = `Feels like: ${Math.round(data.main.feels_like)} °C`;
+  windElement.textContent = `Wind Speed: ${data.wind.speed} m/s`;
   descElement.textContent = `Condition: ${data.weather[0].description}`;
   humidityElement.textContent = `Humidity: ${data.main.humidity}%`;
 
@@ -37,6 +42,8 @@ export function displayWeather(data, searchedCity) {
 export function displayError(errorMessage) {
   cityName.textContent = "⚠️ Error";
   tempElement.textContent = errorMessage;
+  feelsLikeElement.textContent = "";
+  windElement.textContent = "";
   descElement.textContent = "";
   humidityElement.textContent = "";
   if (weatherIcon) {
