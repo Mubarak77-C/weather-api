@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather Api</title>
+    <script type="module" crossorigin src="/assets/index-CTJRNXnH.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-DxCsG2HZ.css">
+  </head>
+  <body>
+    <div id="app">
+      <h1>My Weather App</h1>
+
+      <!-- Add search form -->
+      <form id="search-form">
+        <input
+          type="text"
+          id="city-input"
+          placeholder="Enter city name..."
+          required
+        />
+        <button type="submit" id="search-btn">Search</button>
+      </form>
+
+      <div id="weather-card">
+        <!-- Add the unit toggle button -->
+        <button id="unit-toggle" style="display: none; margin-bottom: 10px">
+          Switch to °F
+        </button>
+        <h2 id="city-name">Search for a city...</h2>
+        <img
+          id="weather-icon"
+          src=""
+          alt="Weather Icon"
+          style="display: none"
+        />
+        <p id="temp"></p>
+        <!-- Add these two new elements -->
+        <p id="feels-like"></p>
+        <p id="wind"></p>
+
+        <p id="desc"></p>
+        <p id="humidity"></p>
+      </div>
+    </div>
+  </body>
+</html>
